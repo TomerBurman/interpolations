@@ -1,4 +1,3 @@
-
 def buildEquationsList(matrix):
     '''
         -------M------
@@ -18,30 +17,31 @@ def buildEquationsList(matrix):
     return equation_list
 
 
-def gauss_seidel_solver(matrix, epsilon=0.0001):
+def gauss_seidel_solver(matrix, epsilon=0.001):
     n, m = find_matrix_size(matrix)
     maxLoops = None
     if not rearangeDominantDiagonal(matrix):
-        print("Matrix is not diagonally dominant")
+        # print("Matrix is not diagonally dominant")
         maxLoops = 100
-    equations = buildEquationsList(matrix) # [[0,1,2,3],[4,0,5,6],[7,8,0,9]], values[0,0,0]
-    values = [0 for x in range(m-1)]
+    equations = buildEquationsList(matrix)  # [[0,1,2,3],[4,0,5,6],[7,8,0,9]], values[0,0,0]
+    values = [0 for x in range(m - 1)]
 
     while True:
         if maxLoops != None:
-            maxLoops -=1
+            maxLoops -= 1
         temp_list = list(values)
-        for i in range(m - 1): # []
-            values[i] = sum([values[j]*equations[i][j] for j in range(m-1)])
+        for i in range(m - 1):  # []
+            values[i] = sum([values[j] * equations[i][j] for j in range(m - 1)])
             values[i] += equations[i][-1]
 
-        print(values)
-        for i in range(m-1):
+        # print(values)
+        for i in range(m - 1):
             if abs(temp_list[i] - values[i]) <= epsilon:
                 if maxLoops is not None:
                     print("Although there is no dominant diagonal the results are : ")
                 else:
-                    print("Matrix solution: ")
+                    pass
+                    # print("Matrix solution: ")
                 return values
         if maxLoops == 0:
             print("The system does not converge. ")
@@ -72,7 +72,6 @@ def rearangeDominantDiagonal(matrix):
     return True
 
 
-
 def find_matrix_size(mat):
     """
     Finds the matrix size
@@ -88,7 +87,6 @@ def find_matrix_size(mat):
 
 matrixA = [[4, 2, 0], [2, 10, 4], [0, 4, 5]]
 vectorB = [[2], [6], [5]]
-
 
 
 def mergeMetrix(matrix, vector):
@@ -110,6 +108,7 @@ def mergeMetrix(matrix, vector):
         mat.append(row)
     return mat
 
+
 def exchange(matrix, row, row2):
     """
     Exchanges two rows in the matrix and returns new e_matrix to multiply the original in
@@ -121,6 +120,7 @@ def exchange(matrix, row, row2):
     e_matrix = i_matrix_gen(*find_matrix_size(matrix))  # generating an e matrix.
     e_matrix[row][row], e_matrix[row2][row2], e_matrix[row][row2], e_matrix[row2][row] = 0, 0, 1, 1
     return e_matrix
+
 
 def i_matrix_gen(e_height, e_width):
     """
