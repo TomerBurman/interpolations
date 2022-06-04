@@ -1,4 +1,4 @@
-def lagrange_interpolation(table,x):
+def lagrange_interpolation(table, x):
     '''
     lagrange_interpolation - builds L_i polynomial for every point in the table
     sums L_i * f(x_i) to with desired x in P(x).
@@ -6,12 +6,14 @@ def lagrange_interpolation(table,x):
     :param x: desired x
     :return: P(x) value. (estimation for f(x))
     '''
-
-    for point in table:
+    sorted_table = sorted(table)
+    if x < sorted_table[0][0] or x > sorted_table[-1][0]:
+        print("You're asking for extra polation.")
+    for point in sorted_table:
         if x == point[0]:
             return point[1]
     p = 0
-    for point in table:
+    for point in sorted_table:
         p += build_L(table, x, point[0]) * point[1]
     return p
 
@@ -32,4 +34,6 @@ def build_L(table, x, x_i):
             lagrange *= (x-point[0]) / (x_i - point[0])
     return lagrange
 
-print(lagrange_interpolation([(1, 1), (2, 0), (4, 1.5)],3))
+
+if __name__ == "__main__":
+    print(lagrange_interpolation([(1, 1), (2, 0), (4, 1.5)],3))

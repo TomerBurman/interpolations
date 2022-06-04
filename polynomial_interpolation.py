@@ -12,9 +12,11 @@ def polynomial_interpolation(table,x):
         if x == point[0]:
             return point[1]
     sorted_table = sorted(table) # sorts the table
+    if x < sorted_table[0][0] or x > sorted_table[-1][0]:
+        print("You're asking for extra polation.")
     matrix = []
     for point in sorted_table:
-        temp = [point[0] ** i for i in range(len(sorted_table)) ] # building matrix coeffiecients.
+        temp = [point[0] ** i for i in range(len(sorted_table))] # building matrix coeffiecients.
         temp = temp + [point[1]] # adding y_i as solution.
         matrix.append(temp)
     coefficient_vector = gauss_seidel_solver(matrix,0.00001) # extracting a_0 ... a_n
@@ -22,3 +24,9 @@ def polynomial_interpolation(table,x):
     for power, elem in enumerate(coefficient_vector, 0):
         value += elem * ((x) ** power) #summing a_0 * (x)^0 + a_1 * (x)^1 ... + a_n * (x)^n-1
     return value
+
+
+
+
+if __name__ == "__main__":
+    print(polynomial_interpolation([(1, 1), (2, 0), (4, 1.5)], 3))

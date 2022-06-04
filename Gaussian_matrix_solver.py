@@ -17,7 +17,7 @@ def buildEquationsList(matrix):
     return equation_list
 
 
-def gauss_seidel_solver(matrix, epsilon=0.001):
+def gauss_seidel_solver(matrix, epsilon=0.00001):
     n, m = find_matrix_size(matrix)
     maxLoops = None
     if not rearangeDominantDiagonal(matrix):

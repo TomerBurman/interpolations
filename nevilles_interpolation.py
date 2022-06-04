@@ -6,21 +6,28 @@ def nevils_interpolation(table, x):
     :param x: x desired
     :return:
     '''
+    if len(table) <= 3:
+        print("Neville's interpolation recieves minimum of 3 points.")
+
     sorted_table = sorted(table)
     for point in table: # if desired point is in our table
         if x == point[0]:
             return point[1]
     if x > sorted_table[-1][0] or x < sorted_table[0][0]: # extrapolation.
         print("You are asking for extrapolation.")
-        return
+
     i = 0
-    while x > sorted_table[i][0]: # discover x's location on our table.
+    while i < len(sorted_table) and x > sorted_table[i][0]:# discover x's location on our table.
         i += 1
     if i == len(table)-1: # between last and before last element
         p_x = build_P(x, sorted_table[i-3:i+1])[2][0]
     elif i == 1: # between first and 2nd element
         p_x = build_P(x, sorted_table[i-1:i+3])[2][0]
-    else:
+    elif i == len(sorted_table): # if i is greater than the last point
+        p_x = build_P(x, sorted_table[i-4:i])[2][0]
+    elif i == 0: # if i is smaller than the first element
+        p_x = build_P(x, sorted_table[i:i+4])[2][0]
+    else: # in between.
         p_x = build_P(x, sorted_table[i-2:i+2])[2][0]
     return p_x
 
@@ -43,5 +50,5 @@ def build_P(x,table):
     return p
 
 
-print(nevils_interpolation([(1,0), (1.2,0.112463), (1.3, 0.167996), (1.4,0.222709)], 1.28))
+print(nevils_interpolation([(1, 1), (2, 0), (4, 1.5)], 3))
 

@@ -6,26 +6,22 @@ def linear_interpolation(table,x):
     :return: f(x) assumption if x is in bounds, else returns None.
     '''
     sorted_table = sorted(table) #
-    print(sorted_table)
     point = sorted_table[0]
     if x < sorted_table[0][0] or x > sorted_table[-1][0]:
         print("You're asking for extra polation.")
-        return None
-    for point2 in sorted_table:
-
-        if x > point2[0]:
+    for point2 in sorted_table[1:]:
+        if x > point2[0] and point2 != sorted_table[-1]:
             point = point2
             continue
         if x == point2[0]:
             return point2[1]
         else:
-            print(point,point2)
+            # print(point, point2)
             f_x = (1 / (point[0] - point2[0])) * ((x * (point[1] - point2[1]) + (point2[1] * point[0] - point[1] * point2[0])))
             return f_x
 
 
-
-
-print(linear_interpolation([(0,0), (1,0.8415), (2,0.9093), (4,-0.7568), (6,-0.2794), (3,0.1411), (5,-0.9589)],-0.5))
+if __name__ == "__main__":
+    print(linear_interpolation([(0,0), (1,0.8415), (2,0.9093), (4,-0.7568), (6,-0.2794), (3,0.1411), (5,-0.9589)],7))
 
 
