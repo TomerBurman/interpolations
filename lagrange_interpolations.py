@@ -6,6 +6,10 @@ def lagrange_interpolation(table,x):
     :param x: desired x
     :return: P(x) value. (estimation for f(x))
     '''
+
+    for point in table:
+        if x == point[0]:
+            return point[1]
     p = 0
     for point in table:
         p += build_L(table, x, point[0]) * point[1]
