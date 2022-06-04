@@ -144,15 +144,15 @@ def generate_matrix(table):
         matrix[i][i - 1] = meu_list[i]
         matrix[i - 1][i] = lambda_list[i - 1]
     return matrix, h_list
-
-if __name__ == "__main__":
-    # Natural
-    print(
-        f'The partial solution is: {spline_interpolation([(0, 0), (math.pi / 6, 0.5), (math.pi / 4, 0.7072), (math.pi / 2, 1)], math.pi / 3)}')
-    set_is_natural(False)
-    # Unnatural
-    print(
-        f'The full solution is: {spline_interpolation([(0, 0), (math.pi / 6, 0.5), (math.pi / 4, 0.7072), (math.pi / 2, 1)], math.pi / 3, 1, 0)}')
-    set_is_natural(True)
+#
+# if __name__ == "__main__":
+#     # Natural
+#     print(
+#         f'The partial solution is: {spline_interpolation([(0, 0), (math.pi / 6, 0.5), (math.pi / 4, 0.7072), (math.pi / 2, 1)], math.pi / 3)}')
+#     set_is_natural(False)
+#     # Unnatural
+#     print(
+#         f'The full solution is: {spline_interpolation([(0, 0), (math.pi / 6, 0.5), (math.pi / 4, 0.7072), (math.pi / 2, 1)], math.pi / 3, 1, 0)}')
+#     set_is_natural(True)
 
 

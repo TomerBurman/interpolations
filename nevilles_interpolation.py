@@ -8,7 +8,7 @@ def nevils_interpolation(table, x):
     '''
     if len(table) <= 3:
         print("Neville's interpolation recieves minimum of 3 points.")
-
+        return
     sorted_table = sorted(table)
     for point in table: # if desired point is in our table
         if x == point[0]:
@@ -50,5 +50,4 @@ def build_P(x,table):
     return p
 
 
-print(nevils_interpolation([(1, 1), (2, 0), (4, 1.5)], 3))
 
