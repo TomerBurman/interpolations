@@ -2,7 +2,7 @@ import math
 import numpy as np
 from Gaussian_matrix_solver import *
 
-isNatural = True
+isNatural = True # indicating which method to use. either natural or full.
 
 
 def set_is_natural(boolean):
@@ -12,12 +12,14 @@ def set_is_natural(boolean):
 
 def spline_interpolation(table, x, f_tagZero=0, f_tagN=0):
     '''
-    spline_interpolation - uses isNatural to decide which method to use. either
-    :param table:
-    :param x:
-    :param f_tagZero:
-    :param f_tagN:
-    :return:
+    spline_interpolation - uses isNatural to decide which method to use. for natural spline isNatural is True, else it's false.
+    builds a matrix with size NxN of the form Meu_i * M_i-1 + 2 * M_i + Lambda_i * M_i+1 = d_i
+    solves the equations, finds M's and then builds s_x
+    :param table: list of tuples where x corresponds to f(x). -> (x,f(x))
+    :param x: required s(x)
+    :param f_tagZero: f_tag(0)
+    :param f_tagN: f_tag(N)
+    :return: s(x)
     '''
     for point in table:  # if x is a point in the table.
         if x == point[0]:
@@ -25,13 +27,11 @@ def spline_interpolation(table, x, f_tagZero=0, f_tagN=0):
     sorted_table = sorted(table)
     matrix, h_list = generate_matrix(table)
     d_list = calc_d(h_list, table, f_tagZero, f_tagN)
-    print(f'For the {isNatural} The Ds are: {d_list}')
     #Using numpy gives about the same results.
     # A =np.array(matrix)
     # B = np.array(d_list)
     # m_list = np.linalg.solve(A,B)
     m_list = gauss_seidel_solver(mergeMetrix(matrix, list(map(lambda x: [x], d_list))))
-    print(f'For the {isNatural} The Ms are: {m_list}')
     i = 0
     if x < sorted_table[0][0]:  # extrapolation when input is smaller than first point.
         s_x = ((((sorted_table[1][0] - x) ** 3) * m_list[0]) + (((x - sorted_table[0][0]) ** 3) * m_list[1])) / (6 * h_list[0]) \
@@ -53,6 +53,11 @@ def spline_interpolation(table, x, f_tagZero=0, f_tagN=0):
 
 
 def calc_h(table):
+    '''
+    calc_h - builds h_list which are h_i = x_i+1 - x_i
+    :param table: list of tuples where x corresponds to f(x). -> (x,f(x))
+    :return: h_list
+    '''
     h_list = list()
     for i in range(len(table) - 1):
         h_list.append(table[i + 1][0] - table[i][0])
@@ -60,6 +65,12 @@ def calc_h(table):
 
 
 def calc_lambda(h_list):
+    '''
+    calc_lambda - builds lambda list where in Natural spline lambda_0 = 0 and in Full spline lambda_0 = 1
+    lambda_i = h_list[i+1] / (h_list[i+1] + h_list[i])
+    :param h_list: distances list
+    :return: lambda list
+    '''
     lambda_list = list()
     if isNatural:
         lambda_list.append(0)
@@ -71,6 +82,11 @@ def calc_lambda(h_list):
 
 
 def calc_meu(lambda_list):
+    '''
+    calc_meu - builds meu_list where meu_i = 1-lambda_list[i] and in Natural spline meu_n = 0, in Full spline meu_n = 1
+    :param lambda_list: lambda list
+    :return: meu_list
+    '''
     meu_list = list()
     for i in range(len(lambda_list)):
         meu_list.append(1 - lambda_list[i])
@@ -108,6 +124,15 @@ def calc_d(h_list, table, f_tagZero, f_tagN):
 
 
 def generate_matrix(table):
+    '''
+    builds NxN matrix in the form of :
+            -------N------
+    | (  2   lambda_0   0)
+    N (  meu_1   2   lambda_0)   = >  Meu_i * M_i-1 + 2 * M_i + Lambda_i * M_i+1 = d_i
+    | (  0   meu_2   2)
+    :param table: table of tuples where x corresponds to f(x)
+    :return: NXN matrix and h_list
+    '''
     size = len(table)
     matrix = i_matrix_gen(size, size + 1)
     h_list = calc_h(table)

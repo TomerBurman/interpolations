@@ -37,11 +37,11 @@ def gauss_seidel_solver(matrix, epsilon=0.00001):
         # print(values)
         for i in range(m - 1):
             if abs(temp_list[i] - values[i]) <= epsilon:
-                if maxLoops is not None:
-                    print("Although there is no dominant diagonal the results are : ")
-                else:
-                    pass
-                    # print("Matrix solution: ")
+                # if maxLoops is not None:
+                #     print("Although there is no dominant diagonal the results are : ")
+                # else:
+                #     pass
+                #     # print("Matrix solution: ")
                 return values
         if maxLoops == 0:
             print("The system does not converge. ")
